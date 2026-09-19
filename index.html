@@ -471,4 +471,1012 @@ Find the objects, count them, and choose the correct sentence!
 </p>
 
 <input
-id="student
+id="studentName"
+class="name-input"
+placeholder="Type your name"
+maxlength="25"
+>
+
+<br>
+
+<button class="btn primary" onclick="startGame()">
+🚀 START GAME
+</button>
+
+<p style="font-size:14px">
+6 Levels • 30 Questions • 300 Points
+</p>
+
+</div>
+
+</section>
+
+
+<!-- ================= MAP ================= -->
+
+<section id="map" class="screen">
+
+<div class="map-title">
+
+<div class="icon">🗺️</div>
+
+<div>
+<h2>Mission Map</h2>
+<p id="welcome"></p>
+</div>
+
+</div>
+
+<div id="levelGrid" class="level-grid"></div>
+
+<div style="text-align:center;margin-top:25px">
+
+<button
+id="continueBtn"
+class="btn primary"
+onclick="continueGame()">
+▶ CONTINUE
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= GAME ================= -->
+
+<section id="game" class="screen">
+
+<div class="game-header">
+
+<div>
+
+<span id="levelTag" class="level-tag">
+LEVEL 1
+</span>
+
+<h2 id="levelTitle">
+🔢 COUNT IT!
+</h2>
+
+</div>
+
+<div class="progress-area">
+
+<div>
+Question <span id="questionNumber">1</span> / 5
+</div>
+
+<div class="progress">
+<div id="progressBar" class="progress-bar"></div>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="question-card">
+
+<div id="visual" class="visual"></div>
+
+<p id="context" class="context"></p>
+
+<div id="question" class="question"></div>
+
+<div id="options" class="options"></div>
+
+<div id="feedback" class="feedback"></div>
+
+<button
+id="nextButton"
+class="btn primary hidden"
+onclick="nextQuestion()">
+NEXT ➜
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= RESULT ================= -->
+
+<section id="result" class="screen">
+
+<div class="result">
+
+<div class="trophy">🏆</div>
+
+<h1>Mission Complete!</h1>
+
+<p id="resultMessage"></p>
+
+<div class="final-score">
+<span id="finalScore">0</span> / 300
+</div>
+
+<div id="stars" class="stars"></div>
+
+<div class="result-box">
+
+<p>
+👤 Player:
+<strong id="resultName"></strong>
+</p>
+
+<p>
+✅ Correct Answers:
+<strong id="correctAnswers"></strong> / 30
+</p>
+
+</div>
+
+<button class="btn primary" onclick="restartGame()">
+🔄 PLAY AGAIN
+</button>
+
+</div>
+
+</section>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   THERE IS & THERE ARE ADVENTURE
+   6 LEVELS × 5 QUESTIONS = 30 QUESTIONS
+===================================================== */
+
+
+const levels = [
+
+/* ================= LEVEL 1 ================= */
+
+{
+id:1,
+title:"COUNT IT!",
+icon:"🔢",
+subtitle:"One or more? Choose the correct form.",
+
+questions:[
+
+{
+visual:"🪥",
+context:"Look at the picture.",
+question:"_____ a toothbrush on the table.",
+options:["There is","There are"],
+answer:"There is",
+hint:"There is = one object."
+},
+
+{
+visual:"🧼 🧼",
+context:"Look carefully.",
+question:"_____ two soaps near the sink.",
+options:["There is","There are"],
+answer:"There are",
+hint:"There are = two or more objects."
+},
+
+{
+visual:"🧴 🧴 🧴",
+context:"Count the bottles.",
+question:"_____ three bottles on the shelf.",
+options:["There is","There are"],
+answer:"There are",
+hint:"Three means more than one."
+},
+
+{
+visual:"🪞",
+context:"Count the mirror.",
+question:"_____ a mirror in the bathroom.",
+options:["There is","There are"],
+answer:"There is",
+hint:"A mirror = one mirror."
+},
+
+{
+visual:"🧻 🧻 🧻 🧻",
+context:"Count the tissues.",
+question:"_____ four tissues on the table.",
+options:["There is","There are"],
+answer:"There are",
+hint:"Four is plural."
+}
+
+]
+},
+
+
+/* ================= LEVEL 2 ================= */
+
+{
+id:2,
+title:"CHOOSE IT!",
+icon:"🎯",
+subtitle:"Choose the correct sentence.",
+
+questions:[
+
+{
+visual:"🪥",
+context:"Bathroom",
+question:"Which sentence is correct?",
+options:[
+"There is a toothbrush.",
+"There are a toothbrush."
+],
+answer:"There is a toothbrush.",
+hint:"A toothbrush is one object."
+},
+
+{
+visual:"🧼 🧼 🧼",
+context:"Bathroom",
+question:"Which sentence is correct?",
+options:[
+"There is three soaps.",
+"There are three soaps."
+],
+answer:"There are three soaps.",
+hint:"Three soaps = plural."
+},
+
+{
+visual:"🧴",
+context:"Bathroom",
+question:"Which sentence is correct?",
+options:[
+"There is a bottle.",
+"There are a bottle."
+],
+answer:"There is a bottle.",
+hint:"A bottle = one."
+},
+
+{
+visual:"🧺 🧺",
+context:"Laundry area",
+question:"Which sentence is correct?",
+options:[
+"There is two baskets.",
+"There are two baskets."
+],
+answer:"There are two baskets.",
+hint:"Two baskets = plural."
+},
+
+{
+visual:"🧻",
+context:"Bathroom",
+question:"Which sentence is correct?",
+options:[
+"There is a tissue.",
+"There are a tissue."
+],
+answer:"There is a tissue.",
+hint:"A tissue = one."
+}
+
+]
+},
+
+
+/* ================= LEVEL 3 ================= */
+
+{
+id:3,
+title:"COMPLETE IT!",
+icon:"✏️",
+subtitle:"Complete the sentence.",
+
+questions:[
+
+{
+visual:"🪥",
+context:"On the table",
+question:"_____ a toothbrush on the table.",
+options:["There is","There are"],
+answer:"There is",
+hint:"One toothbrush."
+},
+
+{
+visual:"🧼 🧼",
+context:"Near the sink",
+question:"_____ two soaps near the sink.",
+options:["There is","There are"],
+answer:"There are",
+hint:"Two soaps."
+},
+
+{
+visual:"🧴 🧴 🧴",
+context:"On the shelf",
+question:"_____ three bottles on the shelf.",
+options:["There is","There are"],
+answer:"There are",
+hint:"Three bottles."
+},
+
+{
+visual:"🪞",
+context:"On the wall",
+question:"_____ a mirror on the wall.",
+options:["There is","There are"],
+answer:"There is",
+hint:"One mirror."
+},
+
+{
+visual:"🧺 🧺 🧺",
+context:"In the laundry area",
+question:"_____ three baskets in the laundry area.",
+options:["There is","There are"],
+answer:"There are",
+hint:"Three baskets."
+}
+
+]
+},
+
+
+/* ================= LEVEL 4 ================= */
+
+{
+id:4,
+title:"HEALTHY BATHROOM",
+icon:"🛁",
+subtitle:"Read the context and find the answer.",
+
+questions:[
+
+{
+visual:"🛁 🪥 🧼 🧴 🪞",
+context:
+"Rani's bathroom has one bathtub, one toothbrush, one soap, one bottle, and one mirror.",
+question:"_____ a toothbrush in Rani's bathroom.",
+options:["There is","There are"],
+answer:"There is",
+hint:"The context says one toothbrush."
+},
+
+{
+visual:"🧼 🧼",
+context:"Rani has two soaps near the sink.",
+question:"_____ two soaps near the sink.",
+options:["There is","There are"],
+answer:"There are",
+hint:"The context says two soaps."
+},
+
+{
+visual:"🧴 🧴 🧴",
+context:"There are three bottles on the shelf.",
+question:"_____ three bottles on the shelf.",
+options:["There is","There are"],
+answer:"There are",
+hint:"Three bottles = plural."
+},
+
+{
+visual:"🪞",
+context:"The bathroom has one mirror.",
+question:"_____ a mirror on the wall.",
+options:["There is","There are"],
+answer:"There is",
+hint:"One mirror = singular."
+},
+
+{
+visual:"🧻 🧻 🧻 🧻",
+context:"There are four tissues beside the sink.",
+question:"_____ four tissues beside the sink.",
+options:["There is","There are"],
+answer:"There are",
+hint:"Four tissues = plural."
+}
+
+]
+},
+
+
+/* ================= LEVEL 5 ================= */
+
+{
+id:5,
+title:"THINK CAREFULLY!",
+icon:"🧠",
+subtitle:"Find the grammar mistake.",
+
+questions:[
+
+{
+visual:"🧼 🧼",
+context:
+'A student writes: "There is two soaps."',
+question:"How should we correct it?",
+options:[
+"There is two soaps.",
+"There are two soaps."
+],
+answer:"There are two soaps.",
+hint:"Two needs There are."
+},
+
+{
+visual:"🪥",
+context:
+'A student writes: "There are a toothbrush."',
+question:"How should we correct it?",
+options:[
+"There is a toothbrush.",
+"There are a toothbrush."
+],
+answer:"There is a toothbrush.",
+hint:"A toothbrush is singular."
+},
+
+{
+visual:"🧴 🧴 🧴",
+context:
+'A student writes: "There is three bottles."',
+question:"How should we correct it?",
+options:[
+"There is three bottles.",
+"There are three bottles."
+],
+answer:"There are three bottles.",
+hint:"Three bottles are plural."
+},
+
+{
+visual:"🪞",
+context:
+'A student writes: "There are one mirror."',
+question:"How should we correct it?",
+options:[
+"There is one mirror.",
+"There are one mirror."
+],
+answer:"There is one mirror.",
+hint:"One mirror is singular."
+},
+
+{
+visual:"🧻 🧻 🧻",
+context:
+'A student writes: "There is three tissues."',
+question:"How should we correct it?",
+options:[
+"There is three tissues.",
+"There are three tissues."
+],
+answer:"There are three tissues.",
+hint:"Three tissues are plural."
+}
+
+]
+},
+
+
+/* ================= LEVEL 6 ================= */
+
+{
+id:6,
+title:"FINAL CHALLENGE",
+icon:"🏆",
+subtitle:"Use what you know!",
+
+questions:[
+
+{
+visual:"🪥 🧼 🧴",
+context:
+"A bathroom has one toothbrush, two soaps, and three bottles.",
+question:"Which sentence is correct?",
+options:[
+"There is three bottles.",
+"There are three bottles."
+],
+answer:"There are three bottles.",
+hint:"Three bottles = plural."
+},
+
+{
+visual:"🪞",
+context:"A bathroom has one mirror.",
+question:"Which sentence is correct?",
+options:[
+"There is a mirror.",
+"There are a mirror."
+],
+answer:"There is a mirror.",
+hint:"One mirror = singular."
+},
+
+{
+visual:"🧺 🧺 🧺 🧺",
+context:"The laundry room has four baskets.",
+question:"Which sentence is correct?",
+options:[
+"There is four baskets.",
+"There are four baskets."
+],
+answer:"There are four baskets.",
+hint:"Four baskets = plural."
+},
+
+{
+visual:"🧻",
+context:"There is one tissue on the table.",
+question:"Complete: _____ a tissue on the table.",
+options:["There is","There are"],
+answer:"There is",
+hint:"One tissue."
+},
+
+{
+visual:"🧼 🧼 🧼 🧼 🧼",
+context:"Look at the five soaps.",
+question:"Complete: _____ five soaps near the sink.",
+options:["There is","There are"],
+answer:"There are",
+hint:"Five soaps = plural."
+}
+
+]
+}
+
+];
+
+
+/* =====================================================
+   GAME VARIABLES
+===================================================== */
+
+let studentName="";
+let score=0;
+let correctAnswers=0;
+
+let currentLevel=0;
+let currentQuestion=0;
+
+let levelScore=[
+0,0,0,0,0,0
+];
+
+
+/* =====================================================
+   SCREEN
+===================================================== */
+
+function showScreen(id){
+
+document.querySelectorAll(".screen").forEach(
+screen=>screen.classList.remove("active")
+);
+
+document.getElementById(id).classList.add("active");
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startGame(){
+
+studentName=
+document.getElementById("studentName").value.trim();
+
+if(studentName===""){
+studentName="Student";
+}
+
+score=0;
+correctAnswers=0;
+currentLevel=0;
+currentQuestion=0;
+
+levelScore=[0,0,0,0,0,0];
+
+document.getElementById("score").textContent=score;
+
+document.getElementById("welcome").textContent=
+`Welcome, ${studentName}! Complete all six missions.`;
+
+renderMap();
+
+showScreen("map");
+
+}
+
+
+/* =====================================================
+   MAP
+===================================================== */
+
+function renderMap(){
+
+const grid=
+document.getElementById("levelGrid");
+
+grid.innerHTML="";
+
+levels.forEach((level,index)=>{
+
+const card=
+document.createElement("div");
+
+card.className="level";
+
+if(levelScore[index]>0){
+card.classList.add("done");
+}
+
+if(
+index>0 &&
+levelScore[index-1]===0
+){
+card.classList.add("locked");
+}
+
+let status="Locked";
+
+if(levelScore[index]>0){
+status=`Completed: ${levelScore[index]}/50`;
+}
+
+else if(
+index===0 ||
+levelScore[index-1]>0
+){
+status="Ready!";
+}
+
+card.innerHTML=`
+
+<div class="level-icon">
+${level.icon}
+</div>
+
+<h3>
+Level ${level.id}: ${level.title}
+</h3>
+
+<p>
+${level.subtitle}
+</p>
+
+<span class="badge">
+${status}
+</span>
+
+`;
+
+if(
+index===0 ||
+levelScore[index-1]>0
+){
+
+card.style.cursor="pointer";
+
+card.onclick=()=>{
+
+currentLevel=index;
+currentQuestion=0;
+
+loadQuestion();
+
+showScreen("game");
+
+};
+
+}
+
+grid.appendChild(card);
+
+});
+
+}
+
+
+/* =====================================================
+   CONTINUE
+===================================================== */
+
+function continueGame(){
+
+let next=
+levelScore.findIndex(score=>score===0);
+
+if(next===-1){
+
+showResult();
+
+return;
+
+}
+
+currentLevel=next;
+currentQuestion=0;
+
+loadQuestion();
+
+showScreen("game");
+
+}
+
+
+/* =====================================================
+   LOAD QUESTION
+===================================================== */
+
+function loadQuestion(){
+
+const level=
+levels[currentLevel];
+
+const q=
+level.questions[currentQuestion];
+
+
+document.getElementById("levelTag").textContent=
+`LEVEL ${level.id}`;
+
+document.getElementById("levelTitle").textContent=
+`${level.icon} ${level.title}`;
+
+document.getElementById("questionNumber").textContent=
+currentQuestion+1;
+
+document.getElementById("progressBar").style.width=
+`${((currentQuestion+1)/5)*100}%`;
+
+
+document.getElementById("visual").textContent=
+q.visual;
+
+document.getElementById("context").textContent=
+q.context;
+
+document.getElementById("question").textContent=
+q.question;
+
+
+document.getElementById("feedback").textContent="";
+document.getElementById("feedback").className=
+"feedback";
+
+
+document.getElementById("nextButton")
+.classList.add("hidden");
+
+
+const options=
+document.getElementById("options");
+
+options.innerHTML="";
+
+
+q.options.forEach(option=>{
+
+const button=
+document.createElement("button");
+
+button.className="option";
+
+button.textContent=option;
+
+button.onclick=()=>{
+checkAnswer(button,option,q);
+};
+
+options.appendChild(button);
+
+});
+
+}
+
+
+/* =====================================================
+   CHECK ANSWER
+===================================================== */
+
+function checkAnswer(button,selected,q){
+
+const buttons=
+document.querySelectorAll(".option");
+
+buttons.forEach(
+btn=>btn.disabled=true
+);
+
+
+if(selected===q.answer){
+
+button.classList.add("correct");
+
+score+=10;
+correctAnswers++;
+
+levelScore[currentLevel]+=10;
+
+document.getElementById("score")
+.textContent=score;
+
+document.getElementById("feedback")
+.textContent=
+"🎉 Correct! Great job!";
+
+document.getElementById("feedback")
+.className=
+"feedback good";
+
+}else{
+
+button.classList.add("wrong");
+
+buttons.forEach(btn=>{
+
+if(btn.textContent===q.answer){
+
+btn.classList.add("correct");
+
+}
+
+});
+
+document.getElementById("feedback")
+.textContent=
+`💡 Not quite! ${q.hint}`;
+
+document.getElementById("feedback")
+.className=
+"feedback bad";
+
+}
+
+
+document.getElementById("nextButton")
+.classList.remove("hidden");
+
+}
+
+
+/* =====================================================
+   NEXT
+===================================================== */
+
+function nextQuestion(){
+
+const level=
+levels[currentLevel];
+
+if(
+currentQuestion<
+level.questions.length-1
+){
+
+currentQuestion++;
+
+loadQuestion();
+
+return;
+
+}
+
+
+/* LEVEL FINISHED */
+
+if(currentLevel<
+levels.length-1
+){
+
+renderMap();
+
+showScreen("map");
+
+}else{
+
+showResult();
+
+}
+
+}
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+function showResult(){
+
+document.getElementById("finalScore")
+.textContent=score;
+
+document.getElementById("correctAnswers")
+.textContent=correctAnswers;
+
+document.getElementById("resultName")
+.textContent=studentName;
+
+
+let stars="⭐";
+
+if(score>=270){
+
+stars="⭐⭐⭐⭐⭐";
+
+}else if(score>=210){
+
+stars="⭐⭐⭐⭐";
+
+}else if(score>=150){
+
+stars="⭐⭐⭐";
+
+}else if(score>=90){
+
+stars="⭐⭐";
+
+}
+
+
+document.getElementById("stars")
+.textContent=stars;
+
+
+let message=
+"Keep practicing! 💪";
+
+if(score>=270){
+
+message=
+"Amazing! You are a There Is & There Are Master! 🏆";
+
+}else if(score>=210){
+
+message=
+"Great work! You understand the rule very well! 🌟";
+
+}else if(score>=150){
+
+message=
+"Good job! Keep practicing! 💪";
+
+}
+
+
+document.getElementById("resultMessage")
+.textContent=message;
+
+showScreen("result");
+
+}
+
+
+/* =====================================================
+   PLAY AGAIN
+===================================================== */
+
+function restartGame(){
+
+document.getElementById("studentName")
+.value=studentName;
+
+startGame();
+
+}
+
+</script>
+
+</body>
+</html>
