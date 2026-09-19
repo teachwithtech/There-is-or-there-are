@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>There Is & There Are Adventure</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:'Fredoka',Arial,sans-serif;
+    background:#eef8f0;
+    color:#263238;
+}
+
+.app{
+    min-height:100vh;
+    max-width:1100px;
+    margin:auto;
+    background:#fffdf7;
+}
+
+/* HEADER */
+header{
+    height:70px;
+    padding:0 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:white;
+    border-bottom:2px solid #eee8dc;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:700;
+}
+
+.score{
+    background:#fff3bd;
+    padding:10px 18px;
+    border-radius:30px;
+    font-weight:700;
+}
+
+/* SCREEN */
+.screen{
+    display:none;
+    padding:30px 20px 50px;
+}
+
+.screen.active{
+    display:block;
+}
+
+/* HOME */
+.hero{
+    max-width:650px;
+    margin:40px auto;
+    padding:45px 25px;
+    text-align:center;
+    background:white;
+    border-radius:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    border:2px solid #eee8dc;
+}
+
+.hero-icon{
+    font-size:80px;
+}
+
+h1{
+    font-size:clamp(35px,7vw,60px);
+    line-height:1.05;
+    margin:15px 0;
+}
+
+h1 span{
+    color:#39a86b;
+}
+
+.hero p{
+    color:#68727a;
+    font-size:18px;
+}
+
+.name-input{
+    width:90%;
+    max-width:380px;
+    padding:15px;
+    border:2px solid #ddd8cc;
+    border-radius:15px;
+    font-size:18px;
+    text-align:center;
+    margin:15px 0;
+    outline:none;
+}
+
+.name-input:focus{
+    border-color:#39a86b;
+}
+
+/* BUTTON */
+.btn{
+    border:none;
+    border-radius:15px;
+    padding:14px 25px;
+    margin:7px;
+    font-family:inherit;
+    font-weight:700;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.primary{
+    background:#39a86b;
+    color:white;
+    box-shadow:0 5px 0 #26774b;
+}
+
+.primary:active{
+    transform:translateY(4px);
+    box-shadow:none;
+}
+
+.secondary{
+    background:#edf0f2;
+    color:#263238;
+}
+
+/* MAP */
+.map-title{
+    max-width:900px;
+    margin:auto auto 25px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.map-title .icon{
+    font-size:50px;
+}
+
+.map-title h2{
+    margin:0;
+    font-size:32px;
+}
+
+.map-title p{
+    margin:5px 0;
+    color:#68727a;
+}
+
+.level-grid{
+    max-width:900px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.level{
+    background:white;
+    border:2px solid #e5e0d6;
+    border-radius:22px;
+    padding:25px 15px;
+    text-align:center;
+    transition:.2s;
+}
+
+.level:hover{
+    transform:translateY(-4px);
+}
+
+.level-icon{
+    font-size:45px;
+}
+
+.level h3{
+    margin:10px 0 5px;
+}
+
+.level p{
+    color:#68727a;
+    min-height:45px;
+}
+
+.badge{
+    display:inline-block;
+    padding:6px 12px;
+    background:#f0f2f3;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.level.done{
+    border-color:#39a86b;
+    background:#f2fff6;
+}
+
+.level.done .badge{
+    background:#d9f5e3;
+    color:#26774b;
+}
+
+.level.locked{
+    opacity:.45;
+}
+
+/* GAME HEADER */
+.game-header{
+    max-width:850px;
+    margin:auto auto 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+}
+
+.level-tag{
+    display:inline-block;
+    background:#e0f5e7;
+    color:#26774b;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.game-header h2{
+    margin:8px 0 0;
+}
+
+.progress-area{
+    width:230px;
+    text-align:right;
+}
+
+.progress{
+    width:100%;
+    height:10px;
+    background:#e8e8e8;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:6px;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#39a86b;
+    transition:.3s;
+}
+
+/* QUESTION */
+.question-card{
+    max-width:850px;
+    margin:auto;
+    padding:30px 25px;
+    background:white;
+    border:2px solid #e5e0d6;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.07);
+}
+
+.visual{
+    min-height:150px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    font-size:65px;
+}
+
+.context{
+    color:#68727a;
+    font-size:16px;
+    max-width:700px;
+    margin:auto;
+}
+
+.question{
+    font-size:23px;
+    font-weight:600;
+    line-height:1.5;
+    margin:20px auto;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    max-width:650px;
+    margin:auto;
+}
+
+.option{
+    border:2px solid #d9dde0;
+    background:white;
+    padding:16px;
+    border-radius:15px;
+    font-family:inherit;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.option:hover{
+    background:#f5f9ff;
+    border-color:#5790e9;
+}
+
+.option.correct{
+    background:#e5f8eb;
+    border-color:#39a86b;
+}
+
+.option.wrong{
+    background:#fff0f0;
+    border-color:#e55b5b;
+}
+
+.feedback{
+    min-height:35px;
+    margin:15px;
+    font-weight:600;
+}
+
+.good{
+    color:#26774b;
+}
+
+.bad{
+    color:#b33d3d;
+}
+
+.hidden{
+    display:none;
+}
+
+/* RESULT */
+.result{
+    max-width:650px;
+    margin:40px auto;
+    padding:45px 25px;
+    background:white;
+    border-radius:30px;
+    border:2px solid #e5e0d6;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.trophy{
+    font-size:80px;
+}
+
+.final-score{
+    font-size:60px;
+    color:#39a86b;
+    font-weight:700;
+    margin:15px;
+}
+
+.stars{
+    font-size:35px;
+}
+
+.result-box{
+    background:#f5f6f2;
+    padding:15px;
+    border-radius:15px;
+    max-width:400px;
+    margin:20px auto;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+
+    header{
+        padding:0 14px;
+    }
+
+    .logo{
+        font-size:15px;
+    }
+
+    .level-grid{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .game-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .progress-area{
+        width:100%;
+        text-align:left;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .visual{
+        font-size:50px;
+        min-height:110px;
+    }
+
+    .question-card{
+        padding:22px 14px;
+    }
+}
+
+@media(max-width:430px){
+
+    .level-grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding:30px 15px;
+    }
+
+    h1{
+        font-size:38px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+    <div class="logo">🏠 There Is & There Are</div>
+    <div class="score">⭐ <span id="score">0</span></div>
+</header>
+
+
+<!-- ================= HOME ================= -->
+
+<section id="home" class="screen active">
+
+<div class="hero">
+
+<div class="hero-icon">🏠</div>
+
+<h1>
+There Is & There Are
+<br>
+<span>Adventure!</span>
+</h1>
+
+<p>
+Find the objects, count them, and choose the correct sentence!
+</p>
+
+<input
+id="student
